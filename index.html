@@ -13,6 +13,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"crossorigin="anonymous"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
     <style>
         html{
           height:100%;
@@ -145,8 +147,7 @@
             text-align: center;
             letter-spacing: 0.03em;
             height: fit-content;
-            min-width: 130px;
-            padding: 10px 30px;
+            padding: 10px 15px;
             font-size: 14px;
             font-weight: 500;
             border-radius: 4px;
@@ -221,6 +222,29 @@
         .checked {
             color: #67bc46;
         }
+        .badge-wrapper {
+            position: relative;
+        }
+        .badge {
+            position: absolute;
+            top: -0.7rem;
+            left: -0.7rem;
+            padding: 0.4rem;
+            background: white;    
+            box-shadow: 0px 1px 8px #888888;
+            border-width: 2px 0 0 2px;
+            border-radius: 0.3rem;
+        }
+        .badge span {
+            color: #333;
+            margin-left: 0.2rem;
+            letter-spacing: -0.05em;
+        }
+        .modal-content {
+            margin-top: 4rem;
+            max-height: 38rem;
+            overflow-y: scroll;
+        }
     </style>
 </head>
 
@@ -241,30 +265,6 @@
                                     <div class="row g-3">
                                         <div class="col-megamenu items-wrapper">
                                             <ul class="list-unstyled d-flex flex-wrap" id="specialty-wrapper">
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
                                             </ul>
                                         </div>  <!-- col-megamenu.// -->
                                     </div><!-- end row --> 
@@ -276,30 +276,6 @@
                                     <div class="row g-3">
                                         <div class="col-megamenu items-wrapper">
                                             <ul class="list-unstyled d-flex flex-wrap" id="tag-wrapper">
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
-                                                <li class="mx-2"><a href="#">Custom Menu</a></li>
                                             </ul>
                                         </div>  <!-- col-megamenu.// -->
                                     </div><!-- end row --> 
@@ -308,16 +284,23 @@
                         </ul>
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <div class="mx-2">                                    
+                                <div class="mx-1">                                    
                                     <input onkeyup="filterUser()" type="email" class="form-control" id="filterZipcode" placeholder="Zipcode" aria-describedby="emailHelp" style="padding: .2rem .7rem;">
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mx-1">
                                 <select class="form-select form-select-sm" aria-label="Small select example">
+                                    <option value="0">0</option>
                                     <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                 </select>
+                            </li>
+                            <li class="nav-item mx-1">
+                                <button class="btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#addModal" style="padding: 5px 15px;">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add</span>
+                                </button>
                             </li>
                         </ul>
                     </div> <!-- navbar-collapse.// -->
@@ -327,46 +310,6 @@
                 <div class="row g-0">
                     <div class="col-6 scrollBar-hidden" style="height: 40rem; overflow-y: scroll;">
                         <div class="py-4 px-4" id="filterWrapper">
-                            <h4 class="my-2 mx-2">5 services found</h4>
-                            <div class="profile-wrapper">
-                                <div class="d-flex">
-                                    <img src="./assets/image/profile.jpeg" width="200" height="200" style="border-radius: .3rem;">
-                                    <div class="profile-content d-flex flex-column justify-content-center" style="margin-left: 1rem;">
-                                        <h6 class="mb-2">William Richard</h6>
-                                        <h6 class="mb-3"><span style="color: #67bc46;">$110 /</span> 5 Orders</h6>
-                                        <div class="d-flex">
-                                            <button class="btn-custom">Free discovery call</button>
-                                            <button class="btn-custom-white mx-2">Send an Email</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="profile-wrapper">
-                                <div class="d-flex">
-                                    <img src="./assets/image/profile.jpeg" width="250" height="250" style="border-radius: .3rem;">
-                                    <div class="profile-content d-flex flex-column justify-content-center" style="margin-left: 1rem;">
-                                        <h6 class="mb-2">William Richard</h6>
-                                        <h6 class="mb-3"><span style="color: #67bc46;">$110 /</span> 5 Orders</h6>
-                                        <div class="d-flex">
-                                            <button class="btn-custom">Free discovery call</button>
-                                            <button class="btn-custom-white mx-2">Send an Email</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="profile-wrapper">
-                                <div class="d-flex">
-                                    <img src="./assets/image/profile.jpeg" width="250" height="250" style="border-radius: .3rem;">
-                                    <div class="profile-content d-flex flex-column justify-content-center" style="margin-left: 1rem;">
-                                        <h6 class="mb-2">William Richard</h6>
-                                        <h6 class="mb-3"><span style="color: #67bc46;">$110 /</span> 5 Orders</h6>
-                                        <div class="d-flex">
-                                            <button class="btn-custom">Free discovery call</button>
-                                            <button class="btn-custom-white mx-2">Send an Email</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="col-6 px-0">
@@ -405,6 +348,131 @@
                 <div id="file-empty" class="d-none" style="padding: 2rem; text-align: center">You should upload the file first</div>
             </div>
             <!-- <div class="bg-block-hori"></div> -->
+        </div>
+        <!-- The Modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="new_form">
+                    <div class="modal-content scrollBar-hidden">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Add Practictioner</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Modal content goes here -->
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="newFirstName" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="newLastName" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label">Image URL</label>
+                                    <input type="text" class="form-control" id="newImageURL" placeholder="" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label">Speciality</label>
+                                    <input type="text" class="form-control" id="newSpecialty" placeholder="" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label">Tags</label>
+                                    <input type="text" class="form-control" id="newTags" placeholder="" required>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Profile Link</label>
+                                        <input type="text" class="form-control" id="newProfile" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Meeting Link</label>
+                                        <input type="text" class="form-control" id="newMeeting" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Review Link</label>
+                                        <input type="text" class="form-control" id="newReview" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="newAddress" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">City</label>
+                                        <input type="text" class="form-control" id="newCity" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Zip Code</label>
+                                        <input type="text" class="form-control" id="newZipcode" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">State</label>
+                                        <input type="text" class="form-control" id="newState" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="newEmail" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Phone</label>
+                                        <input type="text" class="form-control" id="newPhone" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Rank</label>
+                                        <select id="newRank" class="form-select" aria-label="Default select example" required>
+                                            <option value="" disabled selected>Select Rank</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Review</label>
+                                        <select id="newReviewStar" class="form-select" aria-label="Default select example" required>
+                                            <option value="" disabled selected>Select Review</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <!-- <div class="bg-block"></div> -->
     </div>
@@ -448,7 +516,6 @@
         
         function filterUser() {
             filterResult = [];
-            console.log(mainData);
             mainData.forEach((element, index) => {
                 var specs = element.Specialty.split(",");
                 specs.forEach(subElement => {
@@ -468,32 +535,51 @@
                 });
                 if($("#filterZipcode").val() != '') {
                     if(filterSpecialty.length == 0 && filterTag.length == 0) {
+                        filterResult = [];
                         mainData.forEach((element, index) => {
                             filterResult.push(index);
                         });
                     }
                     filterResult.forEach((element, index) => {
                         if(mainData[element]['Zip Code'].toString().indexOf($("#filterZipcode").val()) == -1) {
+                            console.log('find', mainData[element]['Zip Code'].toString().indexOf($("#filterZipcode").val()));
                             filterResult.splice(index, 1);
                         }
                     });
                 }
+                if($("#filterZipcode").val() == '') {
+                    if(filterSpecialty.length == 0 && filterTag.length == 0) {
+                        filterResult = [];
+                        mainData.forEach((element, index) => {
+                            filterResult.push(index);
+                        });
+                    }
+                }
+                sorter();
             });
 
             var tmp = `<h4 class="my-2 mx-2">${filterResult.length} services found</h4>`;
             filterResult.forEach((element, index) => {
-                console.log(mainData[element]);
                 var specs = mainData[element].Specialty.split(",");
                 var subTags = mainData[element].Tags.split(",");
                 tmp += `
                     <div class="profile-wrapper">
                         <div class="d-flex">
-                            <img src="${mainData[element]['Image URL']}" width="250" height="250" style="border-radius: .3rem;">
+                            <div class='badge-wrapper'>
+                                <img src="${mainData[element]['Image URL']}" width="250" height="250" style="border-radius: .3rem;">`
+                                if(mainData[element]['Rank'] == 3) {
+                                    tmp += `<div class="d-flex align-items-center badge">
+                                        <img src="./assets/image/logo.png" width="25" height="25" style="border-radius: .3rem;">
+                                        <span>Recommended</span>
+                                    </div>`;
+                                }
+                                tmp += `
+                            </div>
                             <div class="profile-content d-flex flex-column justify-content-center" style="margin-left: 1rem;">
                                 <h3 class="mb-2">${mainData[element]['First Name']} ${mainData[element]['Last Name']}</h3>
                                 <h5 class="mb-2">${mainData[element]['Address']}, ${mainData[element]['City']}, ${mainData[element]['State']}</h5>
                                 <div class="mb-2">`
-                                    for (let index = 0; index < mainData[element]['Rank']; index++) {
+                                    for (let index = 0; index < mainData[element]['Review Star']; index++) {
                                         tmp += `<span class="fa fa-star checked"></span>`;
                                     }
                                 tmp += `</div>
@@ -523,7 +609,7 @@
                 `;
 
                 // const apiKey = 'YOUR_API_KEY';
-                var zipcode = mainData[element].zipcode; // Replace with the actual zipcode
+                var zipcode = mainData[element]['Zip Code']; // Replace with the actual zipcode
 
                 // Construct the Mapbox Geocoding API URL
                 var geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${zipcode}.json?country=US&access_token=${apiKey}`;
@@ -595,55 +681,153 @@
             filterUser();
         }
 
-  
+        $("#new_form").submit(function(event) {
+            event.preventDefault();
+            const file = 'db.xlsx';
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', file, true);
+            xhr.responseType = 'arraybuffer';
 
+            xhr.onload = function (e) {
+                const data = new Uint8Array(xhr.response);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const reader = new FileReader();
 
+                const newSheetData = [
+                    $("#newFirstName").val(),
+                    $("#newLastName").val(),
+                    $("#newImageURL").val(),
+                    $("#newSpecialty").val(),
+                    $("#newTags").val(),
+                    $("#newProfile").val(),
+                    $("#newMeeting").val(),
+                    $("#newReview").val(),
+                    $("#newAddress").val(),
+                    $("#newCity").val(),
+                    $("#newZipcode").val(),
+                    $("#newState").val(),
+                    $("#newEmail").val(),
+                    $("#newPhone").val(),
+                    $("#newRank").val(),
+                    $("#newReviewStar").val()
+                ];
+
+                // Process Data (add a new row)
+                var ws = workbook.Sheets["Sheet 1"];
+                XLSX.utils.sheet_add_aoa(ws, [newSheetData], {origin: -1, skipHeader: true, origin: mainData.length + 2});
+
+                // Convert the modified workbook to a binary string
+                const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+
+                // Save the modified workbook back to the original file
+                const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+                saveAs(blob, 'db.xlsx');
+
+                mainData.push({
+                    'First Name': $("#newFirstName").val(),
+                    'Last Name': $("#newLastName").val(),
+                    'Specialty': $("#newSpecialty").val(),
+                    'Image URL': $("#newImageURL").val(),
+                    'Tags': $("#newTags").val(),
+                    'Link to profile (button)': $("#newProfile").val(),
+                    'Link to meeting (button)': $("#newMeeting").val(),
+                    'Link to review page': $("#newReview").val(),
+                    'Address': $("#newAddress").val(),
+                    'City': $("#newCity").val(),
+                    'Zip Code': $("#newZipcode").val(),
+                    'State': $("#newState").val(),
+                    'Email': $("#newEmail").val(),
+                    'Phone': $("#newPhone").val(),
+                    'Rank': $("#newRank").val(),
+                    'Review Star': $("#newReviewStar").val()
+                });
+
+                localStorage.setItem('users', JSON.stringify(mainData));
+
+                filterUser();
+                $("#addModal").modal('hide');
+                clearAddModal();
+            };
+
+            xhr.send();
+        })
+
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+
+        function clearAddModal() {
+            $("#newFirstName").val('');
+            $("#newLastName").val('');
+            $("#newSpecialty").val('');
+            $("#newImageURL").val('');
+            $("#newTags").val('');
+            $("#newProfile").val('');
+            $("#newMeeting").val('');
+            $("#newReview").val('');
+            $("#newAddress").val('');
+            $("#newCity").val('');
+            $("#newZipcode").val('');
+            $("#newState").val('');
+            $("#newEmail").val('');
+            $("#newPhone").val('');
+            $("#newRank").val('');
+            $("#newReviewStar").val('');
+        }
+        function readData() {
+            if(localStorage.getItem('users') == undefined) {
+                fetch('db.xlsx')
+                    .then(response => response.arrayBuffer())
+                    .then(data => {
+                        var workbook = XLSX.read(data, {type: 'array'});
+                        workbook.SheetNames.forEach(function(sheetName) {
+                            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                            mainData = XL_row_object;
+                            mainData.forEach(element => {
+                                var specialtyArr = element.Specialty.split(",");     
+                                var tagArr = element.Tags.split(",");     
+                                if(specialtyArr.length > 0) {
+                                    specialtyArr.forEach(subElement => {
+                                        if(specialty.includes(subElement) == false) {
+                                            specialty.push(subElement);
+                                        }
+                                    });
+                                }
+                                if(tagArr.length > 0) {
+                                    tagArr.forEach(subElement => {
+                                        if(tags.includes(subElement) == false) {
+                                            tags.push(subElement);
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                        var tmp = '';
+                        specialty.forEach(element => {
+                            tmp += `<li class="mx-2"><a href="#" onclick="specialyClicked(event, '${element}')">${element}</a></li>`;
+                        });
+                        $("#specialty-wrapper").html(tmp);
+                        tmp = '';
+                        tags.forEach(element => {
+                            tmp += `<li class="mx-2"><a href="#" onclick="tagClicked(event, '${element}')">${element}</a></li>`;
+                        });
+                        $("#tag-wrapper").html(tmp);
+                        filterUser();
+                    })
+                    .catch(error => {
+                        console.error('Error reading the file:', error);
+                    });
+            } else {
+                mainData = JSON.parse(localStorage.getItem('users'));
+            }
+        }
 
 
         $(document).ready(function() {
-            fetch('db.xlsx')
-                .then(response => response.arrayBuffer())
-                .then(data => {
-                    var workbook = XLSX.read(data, {type: 'array'});
-                    workbook.SheetNames.forEach(function(sheetName) {
-                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-                        mainData = XL_row_object;
-                        mainData.forEach(element => {
-                            var specialtyArr = element.Specialty.split(",");     
-                            var tagArr = element.Tags.split(",");     
-                            if(specialtyArr.length > 0) {
-                                specialtyArr.forEach(subElement => {
-                                    if(specialty.includes(subElement) == false) {
-                                        specialty.push(subElement);
-                                    }
-                                });
-                            }
-                            if(tagArr.length > 0) {
-                                tagArr.forEach(subElement => {
-                                    if(tags.includes(subElement) == false) {
-                                        tags.push(subElement);
-                                    }
-                                });
-                            }
-                        });
-                    });
-                    var tmp = '';
-                    specialty.forEach(element => {
-                        tmp += `<li class="mx-2"><a href="#" onclick="specialyClicked(event, '${element}')">${element}</a></li>`;
-                    });
-                    $("#specialty-wrapper").html(tmp);
-                    tmp = '';
-                    tags.forEach(element => {
-                        tmp += `<li class="mx-2"><a href="#" onclick="tagClicked(event, '${element}')">${element}</a></li>`;
-                    });
-                    $("#tag-wrapper").html(tmp);
-                    console.log('tags', tags);
-                    console.log('specialty', specialty);
-                })
-                .catch(error => {
-                    console.error('Error reading the file:', error);
-                });
-            
+            readData();
             document.querySelectorAll('.dropdown-menu').forEach(function(element){
                 element.addEventListener('click', function (e) {
                     e.stopPropagation();
@@ -691,8 +875,8 @@
         });
         
         function sorter() {
-            searchResult.sort(function(a, b) {
-              return  b[21] - a[21];
+            filterResult.sort(function(a, b) {
+              return  b['Rank'] - a['Rank'];
             });
         }
 
